@@ -35,16 +35,15 @@ local function tram_set_line(self, data, train)
 	if string.sub(train.line, 1, 1) == "S" then
 		lint = string.sub(train.line, 2)
 	end
-	if string.len(lint) == 1 then
-		if lint == "X" then line = "X" end
-		line = tonumber(lint)
-	elseif string.len(lint) == 2 then
+	if lint == "X" then
+		line = "X"
+	elseif lint ~= "" and string.len(lint) <= 2 then
 		if tonumber(lint) then
 			line = lint
 		end
 	end
 	if line then
-		if type(line) == "number" or line == "X" then
+		if string.len(line) == 1 or line == "X" then
 			new_line_tex = new_line_tex .. "^somemoretrains_tram_line" .. line .. ".png"
 		else
 			local num = tonumber(line)
