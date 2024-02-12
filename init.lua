@@ -69,33 +69,50 @@ local function tram_set_line(self, data, train)
 	tram_set_textures(self, data)
 end
 
--- Gets called one, currently when punched with bike painter
-local function tram_set_livery(self, puncher, itemstack, data)
+local function custom_may_destroy(self, puncher, time_from_last_punch, tool_capabilities, direction)
 	local itmstck = puncher:get_wielded_item()
 	local item_name = ""
 	if itmstck then item_name = itmstck:get_name() end
 
+	local newliv
+	print(item_name)
 	if item_name == "bike:painter" then
 		local meta = itemstack:get_meta()
 		local newliv = "somemoretrains_tram_painting.png"
 		local color = meta:get_string("paint_color")
 		--minetest.chat_send_all('color: '.. color)
-		if color == "#0000FF" then
+		if color == "#0000FF" then -- Blue
 			newliv = "somemoretrains_tram_painting_blue.png"
 		end
-		if color == "#FF0000" then
+		if color == "#FF0000" then -- Red
 			newliv = "somemoretrains_tram_painting_red.png"
 		end
-		if color == "#00FF00" then
+		if color == "#00FF00" then -- Green
 			newliv = "somemoretrains_tram_painting.png"
 		end
-		if color == "#FFFF00" then
+		if color == "#FFFF00" then -- Yellow
 			newliv = "somemoretrains_tram_painting_yellow.png"
 		end
-		data.livery.painting = newliv
-		tram_set_textures(self, data)
-		--self:set_textures(data)
+	elseif item_name == "dye:red" then
+		newliv = "somemoretrains_tram_painting_red.png"
+	elseif item_name == "dye:blue" then
+		newliv = "somemoretrains_tram_painting_blue.png"
+	elseif item_name == "dye:green" or item_name == "dark_green" then
+		newliv = "somemoretrains_tram_painting.png"
+	elseif item_name == "dye:yellow" then
+		newliv = "somemoretrains_tram_painting_yellow.png"
 	end
+
+	if newliv then
+		advtrains.wagons[self.id].livery.painting = newliv
+		tram_set_textures(self, advtrains.wagons[self.id])
+
+		-- Return false on actions changing the color
+		return false
+	end
+
+	-- Return true otherwise
+	return true
 end
 
 advtrains.register_wagon("tram", {
@@ -211,7 +228,7 @@ advtrains.register_wagon("tram", {
 		end
 	end,
 	set_textures = tram_set_textures,
-	set_livery = tram_set_livery,
+	custom_may_destroy = custom_may_destroy,
 }, S("Tram"), "somemoretrains_tram_inv.png")
 
 --wagons
