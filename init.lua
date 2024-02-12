@@ -1,4 +1,21 @@
-local S = attrans
+-- somemoretrains_tram/init.lua
+-- Trains running on tramway tracks
+--[[
+    Copyright (C) 2021  Alexsandro Percy (APercy) and contributors
+    Copyright (C) 2024  1F616EMO
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+]]
+
+local S = minetest.get_translator("somemoretrains_tram")
 
 -- Gets called when an entity is made - will set the right livery that was painted
 local function tram_set_textures(self, data)
